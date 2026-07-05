@@ -949,6 +949,33 @@
             },
             "Unknown": "Unknown"
         },
+        "OdrivePanel": {
+            "Axis": {
+                "Armed": "Armed",
+                "Calibrated": "Calibrated",
+                "Current": "Current: {measured} / {setpoint} A",
+                "Disarmed": "Disarmed",
+                "NotCalibrated": "Not Calibrated",
+                "PosError": "Pos. error: {value} mm",
+                "Position": "Pos: {pos} mm, Vel: {vel} mm/s",
+                "Temperature": "FET: {fet} °C, Motor: {motor} °C",
+                "UnknownState": "Unknown"
+            },
+            "FwVersion": "FW {version}",
+            "Headline": "ODrive",
+            "HwVersion": "HW {version}",
+            "NoAxes": "No axes configured",
+            "SerialNumber": "S/N {serial}",
+            "State": {
+                "Configuring": "Configuring",
+                "Disconnected": "Disconnected",
+                "Lost": "Lost",
+                "Probing": "Probing",
+                "Ready": "Ready",
+                "RebootPending": "Reboot Pending"
+            },
+            "VbusVoltage": "Bus voltage: {voltage} V"
+        },
         "PowerControlPanel": {
             "Error": "Error",
             "Off": "Off",
