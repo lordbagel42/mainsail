@@ -119,6 +119,7 @@ export const allDashboardPanels = [
     'miscellaneous',
     'spoolman',
     'mmu',
+    'odrive',
     'temperature',
     'webcam',
 ]

@@ -14,6 +14,8 @@ import {
     PrinterConfigMcuTempSensor,
     PrinterTempSensorObject,
     McuTempSensorEntry,
+    PrinterStateOdrive,
+    PrinterStateOdriveAxis,
 } from '@/store/printer/types'
 import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
@@ -403,6 +405,82 @@ export const getters: GetterTree<PrinterState, RootState> = {
         })
 
         return mcus
+    },
+
+    getOdriveBoards: (state): PrinterStateOdrive[] => {
+        const boardPrefix = 'odrive '
+        const axisPrefix = 'odrive_axis '
+        const settings = state.configfile?.settings ?? {}
+
+        const boards: PrinterStateOdrive[] = []
+
+        Object.keys(state).forEach((key) => {
+            if (key !== 'odrive' && !key.toLowerCase().startsWith(boardPrefix)) return
+
+            const board = state[key] ?? {}
+
+            boards.push({
+                key,
+                name: key === 'odrive' ? key : key.slice(boardPrefix.length),
+                connected: board.connected ?? false,
+                state: board.state ?? 'disconnected',
+                fw_version: board.fw_version ?? null,
+                hw_version: board.hw_version ?? null,
+                serial_number: board.serial_number ?? null,
+                vbus_voltage: board.vbus_voltage ?? null,
+                errors: board.errors ?? [],
+                streaming: board.streaming ?? null,
+                capabilities: board.capabilities ?? null,
+                axes: [],
+            })
+        })
+
+        Object.keys(state).forEach((key) => {
+            if (key !== 'odrive_axis' && !key.toLowerCase().startsWith(axisPrefix)) return
+
+            const axisState = state[key] ?? {}
+            const axisName = key === 'odrive_axis' ? key : key.slice(axisPrefix.length)
+
+            // the odrive_axis <-> odrive board relationship is only available via the
+            // axis' own config (the [odrive_axis] section references its board through
+            // the "odrive" config option) - configfile.settings uses lowercase section
+            // names, so match case-insensitively against the subscribed object key.
+            const settingsKey = Object.keys(settings).find((name) => name.toLowerCase() === key.toLowerCase())
+            const boardName: string | null = settingsKey ? (settings[settingsKey]?.odrive ?? null) : null
+
+            const axis: PrinterStateOdriveAxis = {
+                key,
+                name: axisName,
+                board: boardName,
+                axis_state: axisState.axis_state ?? null,
+                armed: axisState.armed ?? false,
+                calibrated: axisState.calibrated ?? false,
+                pre_calibrated_motor: axisState.pre_calibrated_motor ?? false,
+                pre_calibrated_encoder: axisState.pre_calibrated_encoder ?? false,
+                index_found: axisState.index_found ?? false,
+                errors: axisState.errors ?? { axis: [], motor: [], encoder: [], controller: [] },
+                pos_estimate: axisState.pos_estimate ?? null,
+                vel_estimate: axisState.vel_estimate ?? null,
+                pos_error: axisState.pos_error ?? null,
+                iq_measured: axisState.iq_measured ?? null,
+                iq_setpoint: axisState.iq_setpoint ?? null,
+                fet_temp: axisState.fet_temp ?? null,
+                motor_temp: axisState.motor_temp ?? null,
+                pos_gain: axisState.pos_gain ?? null,
+                vel_gain: axisState.vel_gain ?? null,
+                vel_integrator_gain: axisState.vel_integrator_gain ?? null,
+                filter_bandwidth: axisState.filter_bandwidth ?? null,
+                current_lim: axisState.current_lim ?? null,
+                vel_limit: axisState.vel_limit ?? null,
+            }
+
+            const board = boards.find((board) => board.name === boardName)
+            if (board) board.axes.push(axis)
+        })
+
+        boards.forEach((board) => board.axes.sort((a, b) => a.name.localeCompare(b.name)))
+
+        return caseInsensitiveSort(boards, 'name')
     },
 
     getPrinterObject: (state) => (objectName: string) => {

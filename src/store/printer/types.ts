@@ -291,3 +291,64 @@ export interface PrinterGetterObject {
         [key: string]: unknown
     }
 }
+
+export interface PrinterStateOdriveStreaming {
+    rate: number | null
+    jitter_ms: number | null
+    underruns: number | null
+    tx_bytes: number | null
+}
+
+export interface PrinterStateOdriveCapabilities {
+    watchdog_feed_cmd: boolean
+    device_homing: boolean
+    endstop_gpio: boolean
+}
+
+export interface PrinterStateOdriveAxisErrors {
+    axis: string[]
+    motor: string[]
+    encoder: string[]
+    controller: string[]
+}
+
+export interface PrinterStateOdriveAxis {
+    key: string
+    name: string
+    board: string | null
+    axis_state: string | null
+    armed: boolean
+    calibrated: boolean
+    pre_calibrated_motor: boolean
+    pre_calibrated_encoder: boolean
+    index_found: boolean
+    errors: PrinterStateOdriveAxisErrors
+    pos_estimate: number | null
+    vel_estimate: number | null
+    pos_error: number | null
+    iq_measured: number | null
+    iq_setpoint: number | null
+    fet_temp: number | null
+    motor_temp: number | null
+    pos_gain: number | null
+    vel_gain: number | null
+    vel_integrator_gain: number | null
+    filter_bandwidth: number | null
+    current_lim: number | null
+    vel_limit: number | null
+}
+
+export interface PrinterStateOdrive {
+    key: string
+    name: string
+    connected: boolean
+    state: string
+    fw_version: string | null
+    hw_version: string | null
+    serial_number: string | null
+    vbus_voltage: number | null
+    errors: string[]
+    streaming: PrinterStateOdriveStreaming | null
+    capabilities: PrinterStateOdriveCapabilities | null
+    axes: PrinterStateOdriveAxis[]
+}
