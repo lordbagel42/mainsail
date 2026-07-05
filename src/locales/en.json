@@ -961,6 +961,23 @@
                 "Temperature": "FET: {fet} °C, Motor: {motor} °C",
                 "UnknownState": "Unknown"
             },
+            "Calibration": {
+                "ConsoleOutput": "Console output",
+                "DisabledBusy": "Axis is busy, wait until it returns to idle.",
+                "DisabledErrors": "Clear the axis errors before calibrating.",
+                "EncoderCalibrated": "Encoder calibrated",
+                "EncoderNotCalibrated": "Encoder not calibrated",
+                "Headline": "Calibration",
+                "IndexFound": "Index found",
+                "IndexNotFound": "Index not found",
+                "MotorCalibrated": "Motor calibrated",
+                "MotorNotCalibrated": "Motor not calibrated",
+                "OpenConsole": "Open full console",
+                "Start": "Start Calibration",
+                "StepDone": "Calibrated",
+                "StepEncoder": "Encoder",
+                "StepMotor": "Motor"
+            },
             "FwVersion": "FW {version}",
             "Headline": "ODrive",
             "HwVersion": "HW {version}",
