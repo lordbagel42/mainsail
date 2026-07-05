@@ -19,6 +19,10 @@ export const opacityHeaterInactive = '44'
 export const themeDir = '.theme'
 export const datasetInterval = 1000
 export const datasetTypes = ['temperature', 'target', 'power', 'speed']
+
+// rolling time window (seconds) kept for the ODrive tuning scope, fed by the
+// `odrive/telemetry` webhooks endpoint - see src/store/printer/odriveTelemetry
+export const odriveTelemetryWindow = 10
 export const datasetTypesInPercents = ['power', 'speed']
 export const additionalSensors = [
     'aht10',

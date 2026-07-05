@@ -955,6 +955,7 @@
                 "Calibrated": "Calibrated",
                 "Current": "Current: {measured} / {setpoint} A",
                 "Disarmed": "Disarmed",
+                "ErrorCount": "{count} error | {count} errors",
                 "NotCalibrated": "Not Calibrated",
                 "PosError": "Pos. error: {value} mm",
                 "Position": "Pos: {pos} mm, Vel: {vel} mm/s",
@@ -991,6 +992,22 @@
                 "Probing": "Probing",
                 "Ready": "Ready",
                 "RebootPending": "Reboot Pending"
+            },
+            "Tuning": {
+                "ChartCurrentAxis": "Current [A]",
+                "ChartInputPos": "Commanded position",
+                "ChartIqMeasured": "Measured current",
+                "ChartPosEstimate": "Estimated position",
+                "ChartPositionAxis": "Position [mm]",
+                "ChartWaitingForData": "Waiting for telemetry data...",
+                "CurrentLim": "Current limit",
+                "FilterBandwidth": "Filter bandwidth",
+                "Headline": "Tuning",
+                "PosGain": "Position gain",
+                "Save": "Save",
+                "VelGain": "Velocity gain",
+                "VelIntegratorGain": "Velocity integrator gain",
+                "VelLimit": "Velocity limit"
             },
             "VbusVoltage": "Bus voltage: {voltage} V"
         },
