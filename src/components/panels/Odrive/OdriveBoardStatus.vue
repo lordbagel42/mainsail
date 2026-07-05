@@ -40,6 +40,7 @@
                 </v-chip>
             </v-col>
         </v-row>
+        <odrive-board-telemetry-chart :board="board" class="mt-2" />
         <odrive-axis-status v-for="axis in board.axes" :key="axis.key" :axis="axis" class="mt-2" />
         <v-row v-if="board.axes.length === 0" class="py-0" no-gutters>
             <v-col class="pt-0 pb-1 text-body-2">
@@ -53,11 +54,12 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import OdriveAxisStatus from '@/components/panels/Odrive/OdriveAxisStatus.vue'
+import OdriveBoardTelemetryChart from '@/components/panels/Odrive/OdriveBoardTelemetryChart.vue'
 import { convertName } from '@/plugins/helpers'
 import type { PrinterStateOdrive } from '@/store/printer/types'
 
 @Component({
-    components: { OdriveAxisStatus },
+    components: { OdriveAxisStatus, OdriveBoardTelemetryChart },
 })
 export default class OdriveBoardStatus extends Mixins(BaseMixin) {
     convertName = convertName
