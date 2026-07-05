@@ -16,27 +16,59 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins, Prop } from 'vue-property-decorator'
+import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ThemeMixin from '@/components/mixins/theme'
-import { colorArray } from '@/store/variables'
+import { colorArray, odriveTelemetryChartWindow } from '@/store/variables'
 import type { ECBasicOption } from 'echarts/types/dist/shared.d'
-import type { PrinterOdriveTelemetrySample } from '@/store/printer/odriveTelemetry/types'
+import type { PrinterStateOdriveAxis } from '@/store/printer/types'
+
+// one point in the chart's client-side rolling sample buffer, taken from the
+// axis's ordinary printer-object status (the same data OdriveAxisStatus.vue/
+// OdriveAxisCalibration.vue already read via printer.objects.subscribe) -
+// there is no push-style telemetry stream, so this component samples the
+// live prop reactively on every store update instead of polling or
+// subscribing to anything itself.
+interface OdriveTelemetrySample {
+    time: number
+    pos_estimate: number | null
+    vel_estimate: number | null
+    iq_measured: number | null
+}
 
 @Component
 export default class OdriveAxisTelemetryChart extends Mixins(BaseMixin, ThemeMixin) {
-    @Prop({ type: String, required: true }) declare readonly axis: string
+    @Prop({ type: Object, required: true }) declare readonly axis: PrinterStateOdriveAxis
+
+    samples: OdriveTelemetrySample[] = []
 
     mounted() {
-        this.$store.dispatch('printer/odriveTelemetry/subscribe', this.axis)
+        this.pushSample()
     }
 
-    beforeDestroy() {
-        this.$store.dispatch('printer/odriveTelemetry/unsubscribe', this.axis)
+    // fires whenever any field of the subscribed axis object changes (pos_
+    // estimate/vel_estimate/iq_measured included) - Vue's normal reactivity,
+    // no polling timer needed.
+    @Watch('axis', { deep: true })
+    axisChanged() {
+        this.pushSample()
     }
 
-    get samples(): PrinterOdriveTelemetrySample[] {
-        return this.$store.getters['printer/odriveTelemetry/getSamples'](this.axis)
+    pushSample() {
+        const now = Date.now()
+
+        const samples = [
+            ...this.samples,
+            {
+                time: now,
+                pos_estimate: this.axis.pos_estimate,
+                vel_estimate: this.axis.vel_estimate,
+                iq_measured: this.axis.iq_measured,
+            },
+        ]
+
+        const cutoff = now - odriveTelemetryChartWindow
+        this.samples = samples.filter((sample) => sample.time >= cutoff)
     }
 
     get hasSamples(): boolean {
@@ -45,9 +77,9 @@ export default class OdriveAxisTelemetryChart extends Mixins(BaseMixin, ThemeMix
 
     get source() {
         return this.samples.map((sample) => ({
-            time: sample.time * 1000,
-            input_pos: sample.input_pos,
+            time: sample.time,
             pos_estimate: sample.pos_estimate,
+            vel_estimate: sample.vel_estimate,
             iq_measured: sample.iq_measured,
         }))
     }
@@ -70,7 +102,7 @@ export default class OdriveAxisTelemetryChart extends Mixins(BaseMixin, ThemeMix
                 top: 35,
                 right: 45,
                 bottom: 30,
-                left: 45,
+                left: 70,
             },
             xAxis: {
                 type: 'time',
@@ -86,6 +118,15 @@ export default class OdriveAxisTelemetryChart extends Mixins(BaseMixin, ThemeMix
                     axisLabel: { color: this.fgColorMid },
                 },
                 {
+                    name: this.$t('Panels.OdrivePanel.Tuning.ChartVelocityAxis'),
+                    type: 'value',
+                    position: 'left',
+                    offset: 55,
+                    nameTextStyle: { color: this.fgColorMid },
+                    splitLine: { show: false },
+                    axisLabel: { color: this.fgColorMid },
+                },
+                {
                     name: this.$t('Panels.OdrivePanel.Tuning.ChartCurrentAxis'),
                     type: 'value',
                     position: 'right',
@@ -97,28 +138,28 @@ export default class OdriveAxisTelemetryChart extends Mixins(BaseMixin, ThemeMix
             dataset: { source: this.source },
             series: [
                 {
-                    name: this.$t('Panels.OdrivePanel.Tuning.ChartInputPos'),
-                    type: 'line',
-                    showSymbol: false,
-                    yAxisIndex: 0,
-                    encode: { x: 'time', y: 'input_pos' },
-                    lineStyle: { color: colorArray[0], width: 1.5, type: 'dashed' },
-                    itemStyle: { color: colorArray[0] },
-                },
-                {
                     name: this.$t('Panels.OdrivePanel.Tuning.ChartPosEstimate'),
                     type: 'line',
                     showSymbol: false,
                     yAxisIndex: 0,
                     encode: { x: 'time', y: 'pos_estimate' },
-                    lineStyle: { color: colorArray[1], width: 2 },
+                    lineStyle: { color: colorArray[0], width: 2 },
+                    itemStyle: { color: colorArray[0] },
+                },
+                {
+                    name: this.$t('Panels.OdrivePanel.Tuning.ChartVelEstimate'),
+                    type: 'line',
+                    showSymbol: false,
+                    yAxisIndex: 1,
+                    encode: { x: 'time', y: 'vel_estimate' },
+                    lineStyle: { color: colorArray[1], width: 1.5 },
                     itemStyle: { color: colorArray[1] },
                 },
                 {
                     name: this.$t('Panels.OdrivePanel.Tuning.ChartIqMeasured'),
                     type: 'line',
                     showSymbol: false,
-                    yAxisIndex: 1,
+                    yAxisIndex: 2,
                     encode: { x: 'time', y: 'iq_measured' },
                     lineStyle: { color: colorArray[2], width: 1.5 },
                     itemStyle: { color: colorArray[2] },

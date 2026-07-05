@@ -83,7 +83,7 @@
 
             <v-divider class="my-3" />
 
-            <odrive-axis-telemetry-chart :axis="axis.name" />
+            <odrive-axis-telemetry-chart :axis="axis" />
         </v-card-text>
     </v-card>
 </template>

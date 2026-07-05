@@ -139,12 +139,6 @@ export const actions: ActionTree<SocketState, RootState> = {
                 dispatch('server/sensor/updateSensors', payload.params[0], { root: true })
                 break
 
-            // pushed by the odrive/telemetry webhooks endpoint for every
-            // subscribed axis - see src/types/moonraker/OdriveRPC.ts
-            case 'notify_odrive_telemetry':
-                dispatch('printer/odriveTelemetry/handlePush', payload.params[0], { root: true })
-                break
-
             default:
                 window.console.debug(payload)
         }

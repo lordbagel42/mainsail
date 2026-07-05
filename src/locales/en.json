@@ -995,10 +995,11 @@
             },
             "Tuning": {
                 "ChartCurrentAxis": "Current [A]",
-                "ChartInputPos": "Commanded position",
                 "ChartIqMeasured": "Measured current",
                 "ChartPosEstimate": "Estimated position",
                 "ChartPositionAxis": "Position [mm]",
+                "ChartVelEstimate": "Estimated velocity",
+                "ChartVelocityAxis": "Velocity [mm/s]",
                 "ChartWaitingForData": "Waiting for telemetry data...",
                 "CurrentLim": "Current limit",
                 "FilterBandwidth": "Filter bandwidth",

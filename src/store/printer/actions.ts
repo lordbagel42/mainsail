@@ -7,7 +7,6 @@ export const actions: ActionTree<PrinterState, RootState> = {
     reset({ commit }) {
         commit('reset')
         commit('tempHistory/reset')
-        commit('odriveTelemetry/reset')
         commit('socket/clearLoadings', null, { root: true })
     },
 
