@@ -29,11 +29,12 @@
 import type { ServerRPC } from './ServerRPC'
 import type { PrinterRPC } from './PrinterRPC'
 import type { MachineRPC } from './MachineRPC'
+import type { OdriveRPC } from './OdriveRPC'
 
 /**
  * Combined Moonraker RPC Interface containing all method categories.
  */
-export interface MoonrakerRPCInterface extends ServerRPC, PrinterRPC, MachineRPC {}
+export interface MoonrakerRPCInterface extends ServerRPC, PrinterRPC, MachineRPC, OdriveRPC {}
 
 /**
  * Union type of all available RPC method names.

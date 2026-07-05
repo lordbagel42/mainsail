@@ -171,4 +171,16 @@ export const actions: ActionTree<PrinterState, RootState> = {
     clearScrewsTiltAdjust({ commit }) {
         commit('clearScrewsTiltAdjust')
     },
+
+    // one-shot raw property read for the ODrive diagnostics property
+    // browser - a plain request/response Klippy webhooks passthrough
+    // (see src/types/moonraker/OdriveRPC.ts), not a printer-object
+    // subscription, so the result is handed straight back to the caller
+    // instead of being committed to store state.
+    async readOdriveProperty(_context, payload: { board: string; property: string }) {
+        return await Vue.$socket.emitAndWait('printer.odrive.property_read', {
+            odrive: payload.board,
+            property: payload.property,
+        })
+    },
 }
