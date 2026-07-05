@@ -6,10 +6,7 @@
         :collapsible="true"
         card-class="odrive-panel">
         <v-card-text class="px-0 py-2">
-            <div v-for="(board, index) of boards" :key="board.key">
-                <v-divider v-if="index" class="my-2" />
-                <odrive-board-status :board="board" />
-            </div>
+            <odrive-board-list :boards="boards" />
         </v-card-text>
     </panel>
 </template>
@@ -18,12 +15,12 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import OdriveBoardStatus from '@/components/panels/Odrive/OdriveBoardStatus.vue'
+import OdriveBoardList from '@/components/panels/Odrive/OdriveBoardList.vue'
 import { mdiEngineOutline } from '@mdi/js'
 import type { PrinterStateOdrive } from '@/store/printer/types'
 
 @Component({
-    components: { OdriveBoardStatus, Panel },
+    components: { OdriveBoardList, Panel },
 })
 export default class OdrivePanel extends Mixins(BaseMixin) {
     mdiEngineOutline = mdiEngineOutline
