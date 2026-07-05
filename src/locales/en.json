@@ -979,6 +979,40 @@
                 "StepEncoder": "Encoder",
                 "StepMotor": "Motor"
             },
+            "Diagnostics": {
+                "AxisLabel": "Axis {index}",
+                "Category": {
+                    "Board": "Board",
+                    "Controller": "Controller",
+                    "Encoder": "Encoder",
+                    "Motor": "Motor",
+                    "Safety": "Safety",
+                    "State": "State"
+                },
+                "ErrorLog": {
+                    "Appeared": "Appeared",
+                    "Cleared": "Cleared",
+                    "ClearLog": "Clear log",
+                    "ClearLogHint": "Clearing this log only clears what's shown here. To clear the ODrive's own error state, run {command} from the console.",
+                    "ColumnError": "Error",
+                    "ColumnEvent": "Event",
+                    "ColumnLocation": "Location",
+                    "ColumnTime": "Time",
+                    "Empty": "No errors observed yet this session.",
+                    "Headline": "Error log (this session)",
+                    "Hint": "Shows ODrive errors observed while this page has been open. It does not persist across reloads and does not reflect anything tracked by the server before this page was opened."
+                },
+                "Headline": "Diagnostics",
+                "PropertyBrowser": {
+                    "ColumnCategory": "Category",
+                    "ColumnProperty": "Property",
+                    "ColumnValue": "Value",
+                    "Headline": "Property browser",
+                    "Hint": "Reads raw ODrive properties on demand, one request per row. Values are snapshots taken when refreshed, not live.",
+                    "ReadFailed": "Read failed",
+                    "RefreshAll": "Refresh all"
+                }
+            },
             "FwVersion": "FW {version}",
             "Headline": "ODrive",
             "HwVersion": "HW {version}",
