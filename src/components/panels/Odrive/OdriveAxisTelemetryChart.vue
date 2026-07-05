@@ -32,8 +32,10 @@ import type { PrinterStateOdriveAxis } from '@/store/printer/types'
 interface OdriveTelemetrySample {
     time: number
     pos_estimate: number | null
+    pos_error: number | null
     vel_estimate: number | null
     iq_measured: number | null
+    iq_setpoint: number | null
 }
 
 @Component
@@ -62,8 +64,10 @@ export default class OdriveAxisTelemetryChart extends Mixins(BaseMixin, ThemeMix
             {
                 time: now,
                 pos_estimate: this.axis.pos_estimate,
+                pos_error: this.axis.pos_error,
                 vel_estimate: this.axis.vel_estimate,
                 iq_measured: this.axis.iq_measured,
+                iq_setpoint: this.axis.iq_setpoint,
             },
         ]
 
@@ -79,8 +83,10 @@ export default class OdriveAxisTelemetryChart extends Mixins(BaseMixin, ThemeMix
         return this.samples.map((sample) => ({
             time: sample.time,
             pos_estimate: sample.pos_estimate,
+            pos_error: sample.pos_error,
             vel_estimate: sample.vel_estimate,
             iq_measured: sample.iq_measured,
+            iq_setpoint: sample.iq_setpoint,
         }))
     }
 
@@ -147,6 +153,20 @@ export default class OdriveAxisTelemetryChart extends Mixins(BaseMixin, ThemeMix
                     itemStyle: { color: colorArray[0] },
                 },
                 {
+                    // following error (pos_error = commanded - actual position, straight
+                    // from the odrive_axis object, not derived/fabricated) - real signal
+                    // the original design doc called out as useful for diagnosing a
+                    // following-error shutdown after the fact, so it shares the position
+                    // axis with pos_estimate rather than getting its own chart.
+                    name: this.$t('Panels.OdrivePanel.Tuning.ChartPosError'),
+                    type: 'line',
+                    showSymbol: false,
+                    yAxisIndex: 0,
+                    encode: { x: 'time', y: 'pos_error' },
+                    lineStyle: { color: colorArray[3], width: 1.5 },
+                    itemStyle: { color: colorArray[3] },
+                },
+                {
                     name: this.$t('Panels.OdrivePanel.Tuning.ChartVelEstimate'),
                     type: 'line',
                     showSymbol: false,
@@ -162,6 +182,20 @@ export default class OdriveAxisTelemetryChart extends Mixins(BaseMixin, ThemeMix
                     yAxisIndex: 2,
                     encode: { x: 'time', y: 'iq_measured' },
                     lineStyle: { color: colorArray[2], width: 1.5 },
+                    itemStyle: { color: colorArray[2] },
+                },
+                {
+                    // commanded current/torque (setpoint) vs. iq_measured (actual) above -
+                    // same axis/color family, dashed to distinguish commanded from actual,
+                    // the common charting convention for target-vs-actual pairs (this
+                    // codebase's own TempChart target series uses a filled-area style
+                    // instead, which doesn't translate well to a single overlaid line).
+                    name: this.$t('Panels.OdrivePanel.Tuning.ChartIqSetpoint'),
+                    type: 'line',
+                    showSymbol: false,
+                    yAxisIndex: 2,
+                    encode: { x: 'time', y: 'iq_setpoint' },
+                    lineStyle: { color: colorArray[2], width: 1.5, type: 'dashed' },
                     itemStyle: { color: colorArray[2] },
                 },
             ],

@@ -962,6 +962,12 @@
                 "Temperature": "FET: {fet} °C, Motor: {motor} °C",
                 "UnknownState": "Unknown"
             },
+            "BoardTelemetry": {
+                "ChartJitterAxis": "Jitter [ms]",
+                "ChartJitterMs": "Streaming jitter",
+                "ChartVbusVoltage": "Bus voltage",
+                "ChartVbusVoltageAxis": "Bus voltage [V]"
+            },
             "Calibration": {
                 "ConsoleOutput": "Console output",
                 "DisabledBusy": "Axis is busy, wait until it returns to idle.",
@@ -1037,9 +1043,15 @@
             },
             "Tuning": {
                 "ChartCurrentAxis": "Current [A]",
+                "ChartFetTemp": "FET temperature",
                 "ChartIqMeasured": "Measured current",
+                "ChartIqSetpoint": "Commanded current",
+                "ChartMotorTemp": "Motor temperature",
+                "ChartNoMotorThermistor": "No motor thermistor detected - motor temperature omitted.",
+                "ChartPosError": "Following error",
                 "ChartPosEstimate": "Estimated position",
                 "ChartPositionAxis": "Position [mm]",
+                "ChartTemperatureAxis": "Temperature [°C]",
                 "ChartVelEstimate": "Estimated velocity",
                 "ChartVelocityAxis": "Velocity [mm/s]",
                 "ChartWaitingForData": "Waiting for telemetry data...",

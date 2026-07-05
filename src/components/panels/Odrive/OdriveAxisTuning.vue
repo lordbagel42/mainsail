@@ -84,6 +84,8 @@
             <v-divider class="my-3" />
 
             <odrive-axis-telemetry-chart :axis="axis" />
+
+            <odrive-axis-temperature-chart :axis="axis" class="mt-3" />
         </v-card-text>
     </v-card>
 </template>
@@ -95,11 +97,12 @@ import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import NumberInput from '@/components/inputs/NumberInput.vue'
 import OdriveAxisTelemetryChart from '@/components/panels/Odrive/OdriveAxisTelemetryChart.vue'
+import OdriveAxisTemperatureChart from '@/components/panels/Odrive/OdriveAxisTemperatureChart.vue'
 import { mdiContentSave } from '@mdi/js'
 import type { PrinterStateOdriveAxis } from '@/store/printer/types'
 
 @Component({
-    components: { NumberInput, OdriveAxisTelemetryChart },
+    components: { NumberInput, OdriveAxisTelemetryChart, OdriveAxisTemperatureChart },
 })
 export default class OdriveAxisTuning extends Mixins(BaseMixin, ControlMixin) {
     mdiContentSave = mdiContentSave
