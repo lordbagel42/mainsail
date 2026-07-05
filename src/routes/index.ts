@@ -18,6 +18,7 @@ import {
     mdiHistory,
     mdiTimelapse,
     mdiWrench,
+    mdiEngineOutline,
 } from '@mdi/js'
 
 const routes: AppRoute[] = [
@@ -126,6 +127,16 @@ const routes: AppRoute[] = [
         alwaysShow: true,
         showInNavi: true,
         position: 90,
+    },
+    {
+        name: 'odrive',
+        title: 'ODrive',
+        path: '/odrive',
+        icon: mdiEngineOutline,
+        component: () => import('../pages/Odrive.vue'),
+        alwaysShow: false,
+        showInNavi: true,
+        position: 100,
     },
     {
         title: null,

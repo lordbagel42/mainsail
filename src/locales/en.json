@@ -965,6 +965,7 @@
             "Headline": "ODrive",
             "HwVersion": "HW {version}",
             "NoAxes": "No axes configured",
+            "NoBoards": "No ODrive board configured",
             "SerialNumber": "S/N {serial}",
             "State": {
                 "Configuring": "Configuring",
@@ -1138,6 +1139,7 @@
         "Heightmap": "Heightmap",
         "History": "History",
         "Machine": "Machine",
+        "ODrive": "ODrive",
         "Printers": "Printers",
         "Timelapse": "Timelapse",
         "Webcam": "Webcam"

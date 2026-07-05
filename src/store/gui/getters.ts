@@ -107,11 +107,7 @@ export const getters: GetterTree<GuiState, RootState> = {
         }
 
         // remove odrive panel, if no odrive board exists in Klipper
-        const odrivePrefix = 'odrive '
-        const existsOdrive = Object.keys(rootState.printer ?? {}).some(
-            (name) => name.toLowerCase() === 'odrive' || name.toLowerCase().startsWith(odrivePrefix)
-        )
-        if (!existsOdrive) {
+        if (!rootGetters['printer/existsOdrive']) {
             allPanels = allPanels.filter((name) => name !== 'odrive')
         }
 

@@ -483,6 +483,17 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return caseInsensitiveSort(boards, 'name')
     },
 
+    // true if any odrive/odrive_axis-prefixed object is subscribed - used to gate both the
+    // odrive dashboard panel (see gui/getAllPossiblePanels) and the odrive sidebar nav entry
+    // (see components/mixins/navigation.showInNavi)
+    existsOdrive: (state): boolean => {
+        const boardPrefix = 'odrive '
+
+        return Object.keys(state).some(
+            (name) => name.toLowerCase() === 'odrive' || name.toLowerCase().startsWith(boardPrefix)
+        )
+    },
+
     getPrinterObject: (state) => (objectName: string) => {
         if (objectName in state) return state[objectName]
 
