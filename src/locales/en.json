@@ -1018,6 +1018,14 @@
             "HwVersion": "HW {version}",
             "NoAxes": "No axes configured",
             "NoBoards": "No ODrive board configured",
+            "Repl": {
+                "Empty": "No commands run yet. Type a line of Python and press Enter.",
+                "Headline": "Python REPL",
+                "Hint": "A real, stateful Python REPL running in the Klipper process for this board - not sandboxed. Anyone who can reach this can run arbitrary code, exactly like SSH access to the host.",
+                "InputPlaceholder": "Enter a line of Python...",
+                "RequestFailed": "Request failed. The connection may have dropped, or this Klipper/Moonraker build may not support the ODrive REPL endpoints yet.",
+                "Reset": "Reset"
+            },
             "SerialNumber": "S/N {serial}",
             "State": {
                 "Configuring": "Configuring",
