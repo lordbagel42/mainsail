@@ -993,6 +993,23 @@
                 "Ready": "Ready",
                 "RebootPending": "Reboot Pending"
             },
+            "Tuning": {
+                "ChartCurrentAxis": "Current [A]",
+                "ChartIqMeasured": "Measured current",
+                "ChartPosEstimate": "Estimated position",
+                "ChartPositionAxis": "Position [mm]",
+                "ChartVelEstimate": "Estimated velocity",
+                "ChartVelocityAxis": "Velocity [mm/s]",
+                "ChartWaitingForData": "Waiting for telemetry data...",
+                "CurrentLim": "Current limit",
+                "FilterBandwidth": "Filter bandwidth",
+                "Headline": "Tuning",
+                "PosGain": "Position gain",
+                "Save": "Save",
+                "VelGain": "Velocity gain",
+                "VelIntegratorGain": "Velocity integrator gain",
+                "VelLimit": "Velocity limit"
+            },
             "VbusVoltage": "Bus voltage: {voltage} V"
         },
         "PowerControlPanel": {

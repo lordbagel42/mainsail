@@ -19,6 +19,13 @@ export const opacityHeaterInactive = '44'
 export const themeDir = '.theme'
 export const datasetInterval = 1000
 export const datasetTypes = ['temperature', 'target', 'power', 'speed']
+
+// rolling time window (ms) kept in the ODrive tuning chart's client-side
+// sample buffer - see OdriveAxisTelemetryChart.vue. Samples come from the
+// ordinary odrive_axis printer object subscription (the same data source
+// OdriveAxisStatus.vue/OdriveAxisCalibration.vue already use), not a push
+// stream, so this is just how much history the chart keeps on hand.
+export const odriveTelemetryChartWindow = 60 * 1000
 export const datasetTypesInPercents = ['power', 'speed']
 export const additionalSensors = [
     'aht10',
