@@ -955,6 +955,7 @@
                 "Calibrated": "Calibrated",
                 "Current": "Current: {measured} / {setpoint} A",
                 "Disarmed": "Disarmed",
+                "ErrorCount": "{count} error | {count} errors",
                 "NotCalibrated": "Not Calibrated",
                 "PosError": "Pos. error: {value} mm",
                 "Position": "Pos: {pos} mm, Vel: {vel} mm/s",
