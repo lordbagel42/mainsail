@@ -77,12 +77,16 @@ const AXIS_PROPERTY_SUFFIXES: { category: OdrivePropertyCategory; suffix: string
     { category: 'safety', suffix: 'motor.fet_thermistor.temperature' },
     { category: 'state', suffix: 'current_state' },
     { category: 'state', suffix: 'motor.current_control.Iq_measured' },
+    { category: 'state', suffix: 'error' },
 ]
 
-// Board-scope (no "axisN." prefix) raw properties.
+// Board-scope (no "axisN." prefix) raw properties. There is no single
+// board-level "error" property on real ODrive firmware - the aggregate
+// `errors` list in get_status() is a Kalico-side combination of each axis's
+// own error registers (see klippy/extras/odrive/properties.py), not a raw
+// device property, so there's nothing valid to put here beyond vbus_voltage.
 const BOARD_PROPERTIES: { category: OdrivePropertyCategory; property: string }[] = [
     { category: 'board', property: 'vbus_voltage' },
-    { category: 'board', property: 'error' },
 ]
 
 @Component
