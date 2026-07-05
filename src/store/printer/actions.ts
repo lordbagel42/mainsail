@@ -183,4 +183,25 @@ export const actions: ActionTree<PrinterState, RootState> = {
             property: payload.property,
         })
     },
+
+    // pushes exactly one line of Python source into this board's stateful
+    // REPL console (Phase M5 - see src/types/moonraker/OdriveRPC.ts). Like
+    // readOdriveProperty, this is a plain one-shot request/response Klippy
+    // webhooks passthrough, not a printer-object subscription, so the
+    // result is handed straight back to the caller instead of being
+    // committed to store state.
+    async execOdriveReplLine(_context, payload: { board: string; line: string }) {
+        return await Vue.$socket.emitAndWait('printer.odrive.repl_exec', {
+            odrive: payload.board,
+            line: payload.line,
+        })
+    },
+
+    // discards this board's REPL console/namespace so the next
+    // execOdriveReplLine call starts a fresh session.
+    async resetOdriveRepl(_context, payload: { board: string }) {
+        return await Vue.$socket.emitAndWait('printer.odrive.repl_reset', {
+            odrive: payload.board,
+        })
+    },
 }

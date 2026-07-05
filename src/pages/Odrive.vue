@@ -45,6 +45,18 @@
                 </v-card>
             </v-col>
         </v-row>
+        <v-row v-if="klipperReadyForGui && boards.length">
+            <v-col>
+                <v-card>
+                    <v-card-title class="text-body-1">
+                        {{ $t('Panels.OdrivePanel.Repl.Headline') }}
+                    </v-card-title>
+                    <v-card-text class="px-0 py-2">
+                        <odrive-repl-list :boards="boards" />
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
         <v-row v-if="!klipperReadyForGui || !boards.length">
             <v-col>
                 <v-alert
@@ -68,11 +80,12 @@ import OdriveBoardList from '@/components/panels/Odrive/OdriveBoardList.vue'
 import OdriveCalibrationList from '@/components/panels/Odrive/OdriveCalibrationList.vue'
 import OdriveTuningList from '@/components/panels/Odrive/OdriveTuningList.vue'
 import OdriveDiagnosticsList from '@/components/panels/Odrive/OdriveDiagnosticsList.vue'
+import OdriveReplList from '@/components/panels/Odrive/OdriveReplList.vue'
 import { mdiLockOutline } from '@mdi/js'
 import type { PrinterStateOdrive } from '@/store/printer/types'
 
 @Component({
-    components: { OdriveBoardList, OdriveCalibrationList, OdriveTuningList, OdriveDiagnosticsList },
+    components: { OdriveBoardList, OdriveCalibrationList, OdriveTuningList, OdriveDiagnosticsList, OdriveReplList },
 })
 export default class PageOdrive extends Mixins(BaseMixin) {
     mdiLockOutline = mdiLockOutline
