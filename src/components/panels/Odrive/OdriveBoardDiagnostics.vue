@@ -2,12 +2,15 @@
     <div class="px-6">
         <strong class="d-block mb-2">{{ board.name }}</strong>
 
-        <div class="text-body-2 text-uppercase text--disabled mb-1">
+        <!-- text-overline is this codebase's existing idiom for a small caps-style
+             sub-label (see DevicesDialogUsbDevice.vue, MmuGateSummary.vue) rather
+             than a manually uppercased text-body-2 -->
+        <div class="text-overline text--disabled mb-1">
             {{ $t('Panels.OdrivePanel.Diagnostics.PropertyBrowser.Headline') }}
         </div>
         <odrive-property-browser :board="board" class="mb-4" />
 
-        <div class="text-body-2 text-uppercase text--disabled mb-1">
+        <div class="text-overline text--disabled mb-1">
             {{ $t('Panels.OdrivePanel.Diagnostics.ErrorLog.Headline') }}
         </div>
         <odrive-error-log :board="board" />

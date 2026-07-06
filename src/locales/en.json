@@ -962,6 +962,9 @@
                 "Temperature": "FET: {fet} °C, Motor: {motor} °C",
                 "UnknownState": "Unknown"
             },
+            "BoardStatus": {
+                "Headline": "Board Status"
+            },
             "BoardTelemetry": {
                 "ChartJitterAxis": "Jitter [ms]",
                 "ChartJitterMs": "Streaming jitter",

@@ -94,10 +94,17 @@ export default class OdriveAxisTelemetryChart extends Mixins(BaseMixin, ThemeMix
         return {
             renderer: 'svg',
             animation: false,
+            // tooltip shape matches TempChart.vue/HeightmapChart.vue: borderWidth 0 is
+            // used by every chart tooltip in this app, and the padding/fontSize/
+            // className pairing is what those two "custom formatter" charts share
             tooltip: {
                 trigger: 'axis',
                 backgroundColor: this.bgColor(1),
-                textStyle: { color: this.fgColorHi },
+                borderWidth: 0,
+                textStyle: { color: this.fgColorHi, fontSize: '14px' },
+                padding: 15,
+                confine: true,
+                className: 'echarts-tooltip',
             },
             legend: {
                 show: true,

@@ -121,10 +121,16 @@ export default class OdriveAxisTemperatureChart extends Mixins(BaseMixin, ThemeM
         return {
             renderer: 'svg',
             animation: false,
+            // tooltip shape matches TempChart.vue/HeightmapChart.vue - see
+            // OdriveAxisTelemetryChart.vue for the same treatment
             tooltip: {
                 trigger: 'axis',
                 backgroundColor: this.bgColor(1),
-                textStyle: { color: this.fgColorHi },
+                borderWidth: 0,
+                textStyle: { color: this.fgColorHi, fontSize: '14px' },
+                padding: 15,
+                confine: true,
+                className: 'echarts-tooltip',
             },
             legend: {
                 show: true,
