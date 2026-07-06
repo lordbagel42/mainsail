@@ -136,7 +136,7 @@ const routes: AppRoute[] = [
         component: () => import('../pages/Odrive.vue'),
         alwaysShow: false,
         showInNavi: true,
-        position: 100,
+        position: 15,
     },
     {
         title: null,
