@@ -1,14 +1,21 @@
 <template>
     <v-card outlined class="odrive-axis-tuning">
-        <v-card-title class="text-body-1 py-2">
-            <span class="text-no-wrap mr-2">{{ axis.name }}</span>
-            <v-spacer />
-            <v-btn small text color="primary" @click="save">
-                <v-icon small class="mr-1">{{ mdiContentSave }}</v-icon>
-                {{ $t('Panels.OdrivePanel.Tuning.Save') }}
-            </v-btn>
-        </v-card-title>
-        <v-card-text class="pt-0">
+        <v-card-text>
+            <!-- entity-name header matches OdriveBoardStatus.vue's own board-name row
+                 (strong text, no nested v-card-title) so the axis label reads at the
+                 same weight/size everywhere on this page - see
+                 OdriveAxisCalibration.vue for the same treatment -->
+            <v-row no-gutters align="center" class="pb-1">
+                <v-col>
+                    <strong class="text-no-wrap mr-2">{{ axis.name }}</strong>
+                </v-col>
+                <v-col class="col-auto">
+                    <v-btn small text color="primary" @click="save">
+                        <v-icon small class="mr-1">{{ mdiContentSave }}</v-icon>
+                        {{ $t('Panels.OdrivePanel.Tuning.Save') }}
+                    </v-btn>
+                </v-col>
+            </v-row>
             <v-row dense>
                 <v-col cols="12" sm="6" md="4">
                     <number-input

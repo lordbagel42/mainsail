@@ -11,7 +11,7 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <div class="odrive-repl-terminal">
+        <div class="odrive-repl-terminal" :style="terminalStyle">
             <overlay-scrollbars ref="scroll" class="odrive-repl-scroll" :options="{}">
                 <div v-if="entries.length === 0" class="odrive-repl-line odrive-repl-line--hint">
                     {{ $t('Panels.OdrivePanel.Repl.Empty') }}
@@ -29,7 +29,7 @@
                 <v-text-field
                     ref="inputField"
                     v-model="input"
-                    dark
+                    :dark="isDarkTheme"
                     dense
                     hide-details
                     flat
@@ -50,6 +50,7 @@
 <script lang="ts">
 import { Component, Mixins, Prop, Ref } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ThemeMixin from '@/components/mixins/theme'
 import { mdiRestart } from '@mdi/js'
 import type { PrinterStateOdrive } from '@/store/printer/types'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-vue'
@@ -66,7 +67,7 @@ interface VTextFieldRef {
 }
 
 @Component
-export default class OdriveRepl extends Mixins(BaseMixin) {
+export default class OdriveRepl extends Mixins(BaseMixin, ThemeMixin) {
     mdiRestart = mdiRestart
 
     @Prop({ type: Object, required: true }) declare readonly board: PrinterStateOdrive
@@ -85,6 +86,28 @@ export default class OdriveRepl extends Mixins(BaseMixin) {
 
     get promptIndicator(): string {
         return this.more ? '...' : '>>>'
+    }
+
+    // The terminal used to always render dark (#1e1e1e/#d4d4d4), regardless of
+    // the app's own light/dark theme - the same kind of "fixed literal surface
+    // color driven off $vuetify.theme.dark" already used by
+    // ThemeMixin.draggableBgStyle/machineButtonCol, and mirrors how
+    // Codemirror.vue itself switches between the vscodeDark/vscodeLight
+    // highlighting themes. Reusing that convention here so a light-theme user
+    // gets a light terminal instead of an always-dark one bolted onto the rest
+    // of the (theme-aware) page.
+    get isDarkTheme(): boolean {
+        return this.$vuetify.theme.dark
+    }
+
+    get terminalStyle(): Record<string, string> {
+        return {
+            '--odrive-repl-bg': this.isDarkTheme ? '#1e1e1e' : '#f5f5f5',
+            '--odrive-repl-fg': this.isDarkTheme ? '#d4d4d4' : '#212121',
+            '--odrive-repl-fg-muted': this.isDarkTheme ? 'rgba(212, 212, 212, 0.5)' : 'rgba(33, 33, 33, 0.5)',
+            '--odrive-repl-error': this.isDarkTheme ? '#f48771' : '#b71c1c',
+            '--odrive-repl-border': this.isDarkTheme ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.12)',
+        }
     }
 
     onHistoryUp(): void {
@@ -195,9 +218,13 @@ export default class OdriveRepl extends Mixins(BaseMixin) {
 </script>
 
 <style scoped>
+/* Colors below are driven entirely by the --odrive-repl-* custom properties
+   set from terminalStyle() in the component, so the terminal follows the
+   app's light/dark theme like every other themed surface (see terminalStyle()
+   for the precedent this reuses) instead of being hardcoded dark. */
 .odrive-repl-terminal {
-    background-color: #1e1e1e;
-    color: #d4d4d4;
+    background-color: var(--odrive-repl-bg);
+    color: var(--odrive-repl-fg);
     border-radius: 4px;
     overflow: hidden;
 }
@@ -216,23 +243,23 @@ export default class OdriveRepl extends Mixins(BaseMixin) {
 }
 
 .odrive-repl-line--hint {
-    color: rgba(212, 212, 212, 0.5);
+    color: var(--odrive-repl-fg-muted);
     font-style: italic;
 }
 
 .odrive-repl-line--error {
-    color: #f48771;
+    color: var(--odrive-repl-error);
 }
 
 .odrive-repl-input-row {
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1px solid var(--odrive-repl-border);
     padding: 4px 12px;
 }
 
 .odrive-repl-prompt {
     font-family: 'Roboto Mono', monospace;
     font-size: 0.85rem;
-    color: #d4d4d4;
+    color: var(--odrive-repl-fg);
     margin-right: 6px;
     user-select: none;
 }
@@ -240,7 +267,7 @@ export default class OdriveRepl extends Mixins(BaseMixin) {
 .odrive-repl-input :deep(input) {
     font-family: 'Roboto Mono', monospace;
     font-size: 0.85rem;
-    color: #d4d4d4 !important;
-    caret-color: #d4d4d4;
+    color: var(--odrive-repl-fg) !important;
+    caret-color: var(--odrive-repl-fg);
 }
 </style>

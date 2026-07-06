@@ -1,10 +1,15 @@
 <template>
     <v-card outlined class="odrive-axis-calibration">
-        <v-card-title class="text-body-1 py-2">
-            <span class="text-no-wrap mr-2">{{ axis.name }}</span>
-            <v-chip small label :color="statusColor" text-color="white">{{ statusText }}</v-chip>
-        </v-card-title>
-        <v-card-text class="pt-0">
+        <v-card-text>
+            <!-- entity-name header matches OdriveBoardStatus.vue's own board-name row
+                 (strong text + status chip) rather than a nested v-card-title, so the
+                 axis label reads at the same weight/size everywhere on this page -->
+            <v-row no-gutters class="pb-1">
+                <v-col>
+                    <strong class="text-no-wrap mr-2">{{ axis.name }}</strong>
+                    <v-chip small label :color="statusColor" text-color="white">{{ statusText }}</v-chip>
+                </v-col>
+            </v-row>
             <v-stepper :value="stepperValue" flat class="odrive-calibration-stepper elevation-0">
                 <v-stepper-header>
                     <v-stepper-step :complete="axis.pre_calibrated_motor" step="1">
