@@ -74,6 +74,27 @@
 
             <v-row no-gutters class="mt-2" align="center">
                 <v-col class="col-auto">
+                    <v-btn
+                        small
+                        outlined
+                        :loading="diagnosing"
+                        :disabled="isBusy || diagnosing"
+                        @click="runDiagnose">
+                        <v-icon small class="mr-1">{{ mdiStethoscope }}</v-icon>
+                        {{ $t('Panels.OdrivePanel.Calibration.Diagnose') }}
+                    </v-btn>
+                </v-col>
+                <v-col class="text-body-2 text--disabled">
+                    {{
+                        diagnosing
+                            ? $t('Panels.OdrivePanel.Calibration.DiagnoseRunning')
+                            : $t('Panels.OdrivePanel.Calibration.DiagnoseHint')
+                    }}
+                </v-col>
+            </v-row>
+
+            <v-row no-gutters class="mt-2" align="center">
+                <v-col class="col-auto">
                     <v-btn small color="primary" :disabled="startDisabled" @click="startCalibration">
                         <v-icon small class="mr-1">{{ mdiPlayCircleOutline }}</v-icon>
                         {{ $t('Panels.OdrivePanel.Calibration.Start') }}
@@ -109,15 +130,26 @@ import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import { convertName } from '@/plugins/helpers'
-import { mdiPlayCircleOutline } from '@mdi/js'
+import { mdiPlayCircleOutline, mdiStethoscope } from '@mdi/js'
 import type { PrinterStateOdriveAxis } from '@/store/printer/types'
 import type { ServerStateEvent } from '@/store/server/types'
+
+// ODRIVE_ENCODER_DIAGNOSE's default sample window - matches the backend's
+// own default (klippy/extras/odrive/axis.py's DURATION default) so the
+// "Diagnosing..." state clears right around when the verdict actually
+// lands in the console log, without needing to await the RPC round trip
+// (doSend/ControlMixin is fire-and-forget, matching the console's own
+// send-a-gcode-line UX elsewhere in this app).
+const DIAGNOSE_DURATION_SECONDS = 3
+const DIAGNOSE_BUSY_BUFFER_MS = 750
 
 @Component({
     components: { ConsoleTable },
 })
 export default class OdriveAxisCalibration extends Mixins(BaseMixin, ControlMixin) {
     mdiPlayCircleOutline = mdiPlayCircleOutline
+    mdiStethoscope = mdiStethoscope
+    diagnosing = false
     convertName = convertName
 
     @Prop({ type: Object, required: true }) declare readonly axis: PrinterStateOdriveAxis
@@ -187,6 +219,14 @@ export default class OdriveAxisCalibration extends Mixins(BaseMixin, ControlMixi
 
     startCalibration() {
         this.doSend(`ODRIVE_CALIBRATE AXIS=${this.axis.name} TYPE=full`)
+    }
+
+    runDiagnose() {
+        this.diagnosing = true
+        this.doSend(`ODRIVE_ENCODER_DIAGNOSE AXIS=${this.axis.name} DURATION=${DIAGNOSE_DURATION_SECONDS}`)
+        setTimeout(() => {
+            this.diagnosing = false
+        }, DIAGNOSE_DURATION_SECONDS * 1000 + DIAGNOSE_BUSY_BUFFER_MS)
     }
 }
 </script>

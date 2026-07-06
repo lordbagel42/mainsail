@@ -973,6 +973,9 @@
             },
             "Calibration": {
                 "ConsoleOutput": "Console output",
+                "Diagnose": "Diagnose Encoder Wiring",
+                "DiagnoseHint": "Checks the raw encoder signal for wiring problems before you spend time calibrating. Move the shaft by hand while this runs.",
+                "DiagnoseRunning": "Diagnosing... move the shaft by hand now",
                 "DisabledBusy": "Axis is busy, wait until it returns to idle.",
                 "DisabledErrors": "Clear the axis errors before calibrating.",
                 "EncoderCalibrated": "Encoder calibrated",
